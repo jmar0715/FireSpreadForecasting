@@ -8,6 +8,7 @@ def data_generator(file_list, batch_size, lag=2, feature_cols=None):
     if feature_cols is None:
         feature_cols = ['Fuels', 'GPM.LATE.v5_FWI','GEOS-5_FWI','isPerimeter','isFireline']
     for file in file_list:
+        ds = None
         all_data = []
         try:
             print(f"Processing file: {file}")
@@ -49,10 +50,9 @@ def data_generator(file_list, batch_size, lag=2, feature_cols=None):
                     all_data = all_data.transpose('x', 'y', 'time', 'channels')
                     all_data = np.array(all_data)
 
-
             except Exception as e2:
                 print(e2)
-                pass
+                raise Exception(e2)
 
         time_len = len(ds.time)
         max_idx = time_len - lag

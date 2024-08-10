@@ -5,9 +5,12 @@ channels:
 dependencies:
   - fsspec=2024.6.1
   - h5py=3.11.0
+  - h5netcdf
   - hdf5=1.14.3
+  - netcdf4
   - numpy=1.26.4
   - pandas=2.2.2
+  - s3fs
   - scikit-learn=1.5.1
   - tensorflow=2.16.1
   - xarray=2024.7.0

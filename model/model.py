@@ -1,7 +1,7 @@
 import tensorflow as tf
-from tensorflow.python.keras.layers import Concatenate
-from tensorflow.python.keras.losses import BinaryCrossentropy, SparseCategoricalCrossentropy
-from tensorflow.python.keras import regularizers
+from keras.layers import Concatenate
+from keras.losses import BinaryCrossentropy, SparseCategoricalCrossentropy
+from keras import regularizers
 
 
 def define_model_architecture(input_shape=(None, None, 1, 5)):
