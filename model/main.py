@@ -45,8 +45,10 @@ def main(args):
         tf.TensorSpec(shape=(None, None, 1, 5), dtype=tf.float32),
         tf.TensorSpec(shape=(None, None, 1, 2), dtype=tf.float32)
     )
-    train_gen_ds, val_gen_ds = generate_train_and_test_data(args.train_data,
-                                                            args.validation_data,
+    train_data = str(args.train_data).split(" ")
+    validation_data = str(args.validation_data).split(" ")
+    train_gen_ds, val_gen_ds = generate_train_and_test_data(train_data,
+                                                            validation_data,
                                                             output_signature)
     model = create_and_fit_model(train_gen_ds, val_gen_ds)
     model.save(args.model_name)
@@ -55,7 +57,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_name', type=str, default='fcn_model.keras')
-    parser.add_argument('--train_data', nargs='+', required=True)
-    parser.add_argument('--validation_data', nargs='+', required=True)
+    parser.add_argument('--train_data', type=str, required=True)
+    parser.add_argument('--validation_data', type=str, required=True)
     args = parser.parse_args()
     main(args)
