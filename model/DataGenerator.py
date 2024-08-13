@@ -7,13 +7,15 @@ import xarray as xr
 def data_generator(file_list, batch_size, lag=2, feature_cols=None):
     if feature_cols is None:
         feature_cols = ['Fuels', 'GPM.LATE.v5_FWI','GEOS-5_FWI','isPerimeter','isFireline']
-    for file in file_list:
+    for fileObj in file_list:
         ds = None
         all_data = []
+        print(fileObj)
         try:
-            print(f"Processing file: {file}")
-            with fsspec.open(file, mode="rb") as f:
-                ds = xr.open_dataset(file, decode_coords='all', engine='netcdf4')
+            print(f"Processing file: {fileObj}")
+            with fsspec.open(fileObj, mode="rb") as f:
+                ds = xr.open_dataset(f, decode_coords='all', engine='netcdf4')
+                ds.load()
                 for col in feature_cols:
                     all_na = np.isnan(ds[col].values).all()
                     if all_na == True:
@@ -33,7 +35,9 @@ def data_generator(file_list, batch_size, lag=2, feature_cols=None):
         except Exception as e1:
             print(e1)
             try:
-                with xr.open_dataset(file, decode_coords='all', engine='h5netcdf') as ds:
+                with fsspec.open(fileObj, mode="rb") as f:
+                    ds = xr.open_dataset(f, decode_coords='all', engine='h5netcdf')
+                    ds.load()
                     for col in feature_cols:
                         all_na = np.isnan(ds[col].values).all()
                         if all_na == True:
@@ -47,13 +51,16 @@ def data_generator(file_list, batch_size, lag=2, feature_cols=None):
                         all_data.append(input_data)
 
                     all_data = xr.concat(all_data, dim='channels')
+
                     all_data = all_data.transpose('x', 'y', 'time', 'channels')
+
                     all_data = np.array(all_data)
 
             except Exception as e2:
                 print(e2)
-                raise Exception(e2)
-
+                # raise Exception(e2)
+                continue
+                
         time_len = len(ds.time)
         max_idx = time_len - lag
 
