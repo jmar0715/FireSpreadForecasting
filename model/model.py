@@ -8,7 +8,7 @@ def define_model_architecture(input_shape=(None, None, 1, 5)):
     input_layer = tf.keras.layers.Input(shape=input_shape)
 
     # encoder.. first half of model, will be starting with convolutional layers
-    x = tf.keras.layers.Conv3D(filters=8, kernel_size=(3, 3, 3), strides=(1, 1, 1), padding='same',
+    x = tf.keras.layers.Conv3D(filters=8, kernel_size=(3, 3, 3), strides=(1, 1, 1),     padding='same',
                                kernel_regularizer=regularizers.l2(0.01))(input_layer)  # filters more dep on input shape
     x = tf.keras.layers.BatchNormalization()(x)
     x = tf.keras.layers.Activation('relu')(x)
