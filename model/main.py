@@ -10,7 +10,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 
-def get_files(start='',end=''):
+def get_files(start='2014',end='2015'):
     fs = fsspec.filesystem('s3', anon=True)
     s3 = s3fs.S3FileSystem(anon=False)
     all_files = []
