@@ -10,7 +10,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 
-def get_files(start='2014',end='2015'):
+def get_files(start='2014',end='2022'):
     fs = fsspec.filesystem('s3', anon=True)
     s3 = s3fs.S3FileSystem(anon=False)
     all_files = []
@@ -79,17 +79,15 @@ def main(args):
     np.random.seed(42)
     random.seed(42)
  
-    training_files = all_files[0:int(0.75 * len(all_files))]
-    testing_files = all_files[int(0.75 * len(all_files)):]
  
-    train_data, validation_data = train_test_split(all_files, test_size = 0.2, random_state=42)
+    train_data, validation_data = train_test_split(all_files, test_size = 0.25, random_state=42)
  
 
     train_gen_ds, val_gen_ds = generate_train_and_test_data(train_data,
                                                             validation_data,
                                                             output_signature)
-    train_gen_ds = train_gen_ds.take(4)
-    val_gen_ds = val_gen_ds.take(1)
+    # train_gen_ds = train_gen_ds.take(100)
+    # val_gen_ds = val_gen_ds.take(20)
     
     model = create_and_fit_model(train_gen_ds, val_gen_ds)
     model.save(args.model_name)
