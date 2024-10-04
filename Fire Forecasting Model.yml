@@ -1,0 +1,25 @@
+algorithm_description: Machine Learning Forecasting for All Files
+algorithm_name: Fire Forecasting Model
+algorithm_version: dps
+build_command: FireSpreadForecasting/dps/build.sh
+disk_space: 20GB
+docker_container_url: mas.maap-project.org/root/maap-workspaces/base_images/python:v4.0.0
+inputs:
+  config: []
+  file: []
+  positional:
+  - default: ''
+    description: ''
+    name: model_name
+    required: false
+  - default: ''
+    description: ''
+    name: start_year
+    required: false
+  - default: ''
+    description: ''
+    name: end_year
+    required: false
+queue: maap-dps-worker-4vcpu-8gb
+repository_url: https://github.com/jmar0715/FireSpreadForecasting
+run_command: FireSpreadForecasting/dps/run.sh
